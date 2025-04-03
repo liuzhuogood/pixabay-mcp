@@ -1,38 +1,51 @@
-# Pixabay Image Search MCP
+# Pixabay图片搜索MCP
 
-A FastMCP service for searching images from Pixabay.
+一个用于从Pixabay搜索图片的MCP服务。
 
-## Setup
+## 使用方法
 
-1. Clone the repository
-2. Install dependencies:
-   ```
-   pip install -e .
-   ```
-3. Create a `.env` file in the root directory with your Pixabay API key:
-   ```
-   PIXABAY_API_KEY=your_api_key_here
-   ```
+### PIP方式
+``` 
+ # 安装
+ pip install pixabay-mcp
 
-## Usage
+ # 获取工具路径
+ which pixabay-mcp
 
-Run the server:
+ # 运行
+ /Users/liuzhuo/miniconda3/bin/pixabay-mcp  --api-key=APIKEY
+```
+
+### uv方式
+```
+uvx pixabay-mcp --api-key=APIKEY
+```
+
+## 启动服务
+
+运行服务器：
 
 ```
+# 方法1: 使用.env文件
+# 在根目录创建.env文件并添加以下内容:
+# PIXABAY_API_KEY=你的API密钥
 python server.py
+
+# 方法2: 使用命令行参数
+python server.py --api-key=APIKEY
 ```
 
-The MCP server will be available for AI agents to use for image searching.
+MCP服务器将可供AI代理用于图片搜索。
 
-## Logging
+## 日志
 
-Logs are saved to the application directory with filename format `app_YYYYMMDD.log`.
+日志保存在应用程序目录中，文件名格式为`app_YYYYMMDD.log`。
 
-## Development
+## 开发
 
-- The `.env` file is excluded from git to protect API keys
-- Make sure to install the development dependencies if you plan to contribute
+- `.env`文件被排除在git之外以保护API密钥
+- 如果您计划贡献代码，请确保安装开发依赖项
 
-## License
+## 许可证
 
 [MIT](LICENSE) 

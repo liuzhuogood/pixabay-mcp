@@ -1,11 +1,27 @@
 [project]
 name = "pixabay-mcp"
-version = "0.1.0"
-description = "Add your description here"
-requires-python = ">=3.9"
+version = "1.0.0"
+authors = [{name = "liuzhuo", email = "liuzhuogood@gmail.com"}]
+description = "Pixabay MCP server, a simple tool to search images from Pixabay"
+requires-python = ">=3.10"
+readme = "README.md"
 dependencies = [
     "fastmcp",
     "requests",
     "pydantic",
     "python-dotenv",
 ]
+
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project.scripts]
+pixabay-mcp = "server:main"
+
+[tool.pyright]
+include = ["src"]
+venvPath = "."
+venv = ".venv"

@@ -4,21 +4,35 @@ from pydantic import Field
 from pydantic.fields import FieldInfo
 import logging
 import os
+import sys
 from datetime import datetime
 from dotenv import load_dotenv
+import argparse
+
+# 解析命令行参数
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Pixabay MCP Server')
+    parser.add_argument('--api-key', dest='pixabay_api_key', help='Pixabay API Key')
+    return parser.parse_args()
+
+# 处理命令行参数并设置环境变量
+args = parse_arguments()
+if args.pixabay_api_key:
+    os.environ["PIXABAY_API_KEY"] = args.pixabay_api_key
+    print(f"Pixabay API Key set from command line argument")
 
 # Load environment variables
 load_dotenv()
 
 # Configure logging
-log_dir = os.path.dirname(__file__)
-log_file = os.path.join(log_dir, f"app_{datetime.now().strftime('%Y%m%d')}.log")
+# log_dir = os.path.dirname(__file__)
+# log_file = os.path.join(log_dir, f"app_{datetime.now().strftime('%Y%m%d')}.log")
 
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler(log_file),
+        # logging.FileHandler(log_file),
         logging.StreamHandler()
     ]
 )
@@ -35,7 +49,7 @@ def search_image(q: str = Field(..., description="搜索关键词"),
                  category: str = Field("all",
                                        description="分类,Accepted values: backgrounds, fashion, nature, science, education, feelings, health, people, religion, places, animals, industry, computer, food, sports, transportation, travel, buildings, business, music"),
 
-                 ) -> list[str]:
+                 ) -> str:
     """ 根据关键词搜索图片,返回图片 URL 列表 """
     logger.info(f"Searching images with query: {q}, lang: {lang}, image_type: {image_type}, category: {category}")
 
@@ -45,13 +59,13 @@ def search_image(q: str = Field(..., description="搜索关键词"),
         image_type = image_type.default
     if isinstance(category, FieldInfo):
         category = category.default
-    
+
     # Get API key from environment variable
     api_key = os.getenv("PIXABAY_API_KEY")
     if not api_key:
         logger.error("PIXABAY_API_KEY not found in environment variables")
-        return []
-        
+        return f"Error: PIXABAY_API_KEY not found in environment variables"
+
     url = f"https://pixabay.com/api/?key={api_key}&q={q}&image_type={image_type}&lang={lang}&category={category}&pretty=true"
 
     try:
@@ -64,16 +78,20 @@ def search_image(q: str = Field(..., description="搜索关键词"),
             logger.info(f"Found {len(images)} images for query: {q}")
         else:
             logger.warning(f"No images found for query: {q}")
-        return images
+        return '\n'.join(images)
     except requests.exceptions.RequestException as e:
         logger.error(f"Request error: {e}")
-        return []
+        return f"Error: {e}"
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
-        return []
+        return f"Error: {e}"
+
+
+def main():
+    logger.info("Starting Pixabay MCP server")
+    mcp.run()
 
 
 if __name__ == "__main__":
     # print(search_image(q="girl"))
-    logger.info("Starting Pixabay MCP server")
-    mcp.run()
+    main()
