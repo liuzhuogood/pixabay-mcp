@@ -4,6 +4,7 @@
 
 ## 使用方法
 
+
 ### PIP方式
 ``` 
  # 安装
@@ -20,6 +21,10 @@
 ```
 uvx pixabay-mcp --api-key=APIKEY
 ```
+
+<img src="https://i.miji.bid/2025/04/03/d9a02825037eb5b96dd87f671264bca9.jpeg" width="800">
+<img src="https://i.miji.bid/2025/04/03/74af7d5580b6346123972f1b150aeeb6.jpeg" width="800">
+
 
 ## 启动服务
 
