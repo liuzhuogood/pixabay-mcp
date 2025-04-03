@@ -4,7 +4,8 @@
 
 ## 使用方法
 
-
+请预先申请自己的API KEY:
+https://pixabay.com/api/docs/
 ### PIP方式
 ``` 
  # 安装
